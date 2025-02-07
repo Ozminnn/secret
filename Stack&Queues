@@ -1,0 +1,155 @@
+import java.util.*;
+
+public class StackQueues {
+
+    // Stack implementation using LinkedList
+    static class Stack {
+        private LinkedList<Integer> stackList = new LinkedList<>();
+        private int maxSize;
+
+        public Stack(int maxSize) {
+            this.maxSize = maxSize;
+        }
+
+        public void push(int value) {
+            if (stackList.size() >= maxSize) {
+                System.out.println("Stack is full. Cannot push more elements.");
+            } else {
+                stackList.addFirst(value);  // Push to the front of the list
+                System.out.println("Pushed: " + value);
+            }
+            print();  // Display the current stack contents
+        }
+
+        public void pop() {
+            if (stackList.isEmpty()) {
+                System.out.println("Stack is empty. Cannot pop.");
+            } else {
+                int value = stackList.removeFirst();  // Pop from the front of the list
+                System.out.println("Popped: " + value);
+            }
+            print();  // Display the current stack contents
+        }
+
+        public void print() {
+            System.out.println("Stack contents: " + stackList);
+        }
+    }
+
+    // Queue implementation using LinkedList
+    static class Queue {
+        private LinkedList<Integer> queueList = new LinkedList<>();
+        private int maxSize;
+
+        public Queue(int maxSize) {
+            this.maxSize = maxSize;
+        }
+
+        public void enqueue(int value) {
+            if (queueList.size() >= maxSize) {
+                System.out.println("Queue is full. Cannot enqueue more elements.");
+            } else {
+                queueList.addLast(value);  // Enqueue to the end of the list
+                System.out.println("Enqueued: " + value);
+            }
+            print();  // Display the current queue contents
+        }
+
+        public void dequeue() {
+            if (queueList.isEmpty()) {
+                System.out.println("Queue is empty. Cannot dequeue.");
+            } else {
+                int value = queueList.removeFirst();  // Dequeue from the front of the list
+                System.out.println("Dequeued: " + value);
+            }
+            print();  // Display the current queue contents
+        }
+
+        public void print() {
+            System.out.println("Queue contents: " + queueList);
+        }
+    }
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        while (true) {
+            System.out.println("Choose 'stack' or 'queue': ");
+            String choice = scanner.nextLine().toLowerCase();
+
+            if (!choice.equals("stack") && !choice.equals("queue")) {
+                System.out.println("Invalid choice. Please enter 'stack' or 'queue'.");
+                continue;
+            }
+
+            System.out.println("Enter the array size (n): ");
+            int n = Integer.parseInt(scanner.nextLine());
+
+            if (choice.equals("stack")) {
+                Stack stack = new Stack(n);
+
+                while (true) {
+                    System.out.println("Do you want to push or pop (type 'push' or 'pop')?");
+                    String action = scanner.nextLine().toLowerCase();
+
+                    if (action.equals("push")) {
+                        System.out.println("Enter integer value to push: ");
+                        int value = Integer.parseInt(scanner.nextLine());
+                        stack.push(value);
+                    } else if (action.equals("pop")) {
+                        stack.pop();
+
+                        // After pop, ask the user whether to continue or end
+                        System.out.println("Do you want to continue or end? (type 'continue' or 'end')");
+                        String continueAction = scanner.nextLine().toLowerCase();
+                        if (continueAction.equals("end")) {
+                            break;
+                        } else if (!continueAction.equals("continue")) {
+                            System.out.println("Invalid input. Exiting...");
+                            break;
+                        }
+                    } else {
+                        System.out.println("Invalid action. Please enter 'push' or 'pop'.");
+                    }
+                }
+            } else if (choice.equals("queue")) {
+                Queue queue = new Queue(n);
+
+                while (true) {
+                    System.out.println("Do you want to enqueue or dequeue (type 'enqueue' or 'dequeue')?");
+                    String action = scanner.nextLine().toLowerCase();
+
+                    if (action.equals("enqueue")) {
+                        System.out.println("Enter integer value to enqueue: ");
+                        int value = Integer.parseInt(scanner.nextLine());
+                        queue.enqueue(value);
+                    } else if (action.equals("dequeue")) {
+                        queue.dequeue();
+
+                        // After dequeue, ask the user whether to continue or end
+                        System.out.println("Do you want to continue or end? (type 'continue' or 'end')");
+                        String continueAction = scanner.nextLine().toLowerCase();
+                        if (continueAction.equals("end")) {
+                            break;
+                        } else if (!continueAction.equals("continue")) {
+                            System.out.println("Invalid input. Exiting...");
+                            break;
+                        }
+                    } else {
+                        System.out.println("Invalid action. Please enter 'enqueue' or 'dequeue'.");
+                    }
+                }
+            }
+
+            System.out.println("Do you want to start over with another stack or queue (type 'yes' or 'no')?");
+            String restart = scanner.nextLine().toLowerCase();
+            if (restart.equals("no")) {
+                System.out.println("Goodbye!");
+                break;
+            }
+        }
+
+        scanner.close();
+    }
+}
+
