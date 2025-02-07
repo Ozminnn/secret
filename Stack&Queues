@@ -2,16 +2,16 @@ import java.util.*;
 
 public class StackQueues {
 
-    // Stack implementation using LinkedList
+    // Stack implementation using LinkedList for Strings
     static class Stack {
-        private LinkedList<Integer> stackList = new LinkedList<>();
+        private LinkedList<String> stackList = new LinkedList<>();
         private int maxSize;
 
         public Stack(int maxSize) {
             this.maxSize = maxSize;
         }
 
-        public void push(int value) {
+        public void push(String value) {
             if (stackList.size() >= maxSize) {
                 System.out.println("Stack is full. Cannot push more elements.");
             } else {
@@ -25,7 +25,7 @@ public class StackQueues {
             if (stackList.isEmpty()) {
                 System.out.println("Stack is empty. Cannot pop.");
             } else {
-                int value = stackList.removeFirst();  // Pop from the front of the list
+                String value = stackList.removeFirst();  // Pop from the front of the list
                 System.out.println("Popped: " + value);
             }
             print();  // Display the current stack contents
@@ -36,16 +36,16 @@ public class StackQueues {
         }
     }
 
-    // Queue implementation using LinkedList
+    // Queue implementation using LinkedList for Strings
     static class Queue {
-        private LinkedList<Integer> queueList = new LinkedList<>();
+        private LinkedList<String> queueList = new LinkedList<>();
         private int maxSize;
 
         public Queue(int maxSize) {
             this.maxSize = maxSize;
         }
 
-        public void enqueue(int value) {
+        public void enqueue(String value) {
             if (queueList.size() >= maxSize) {
                 System.out.println("Queue is full. Cannot enqueue more elements.");
             } else {
@@ -59,7 +59,7 @@ public class StackQueues {
             if (queueList.isEmpty()) {
                 System.out.println("Queue is empty. Cannot dequeue.");
             } else {
-                int value = queueList.removeFirst();  // Dequeue from the front of the list
+                String value = queueList.removeFirst();  // Dequeue from the front of the list
                 System.out.println("Dequeued: " + value);
             }
             print();  // Display the current queue contents
@@ -93,8 +93,8 @@ public class StackQueues {
                     String action = scanner.nextLine().toLowerCase();
 
                     if (action.equals("push")) {
-                        System.out.println("Enter integer value to push: ");
-                        int value = Integer.parseInt(scanner.nextLine());
+                        System.out.println("Enter a value to push: ");
+                        String value = scanner.nextLine();
                         stack.push(value);
                     } else if (action.equals("pop")) {
                         stack.pop();
@@ -120,8 +120,8 @@ public class StackQueues {
                     String action = scanner.nextLine().toLowerCase();
 
                     if (action.equals("enqueue")) {
-                        System.out.println("Enter integer value to enqueue: ");
-                        int value = Integer.parseInt(scanner.nextLine());
+                        System.out.println("Enter a value to enqueue: ");
+                        String value = scanner.nextLine();
                         queue.enqueue(value);
                     } else if (action.equals("dequeue")) {
                         queue.dequeue();
@@ -152,4 +152,3 @@ public class StackQueues {
         scanner.close();
     }
 }
-
