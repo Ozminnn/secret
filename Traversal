@@ -1,0 +1,230 @@
+import java.util.InputMismatchException;
+import java.util.LinkedList;
+import java.util.Queue;
+import java.util.Scanner;
+
+// Utility class to convert string input to integer array
+class StringToArray {
+    public int[] stringToArr(String s) {
+        String[] s1 = s.replaceAll("\\[", "").replaceAll("]", "").split(",");
+        int[] arr = new int[s1.length];
+
+        for (int i = 0; i < s1.length; i++) {
+            arr[i] = Integer.parseInt(s1[i].trim());
+        }
+        return arr;
+    }
+}
+
+// Node class
+class Node {
+    int key;
+    Node left, right;
+
+    public Node(int item) {
+        key = item;
+        left = right = null;
+    }
+}
+
+// BinaryTree class
+class BinaryTree {
+    Node root;
+
+    public BinaryTree() {
+        root = null;
+    }
+
+    // Insert a new node
+    public void insert(int key) {
+        root = insertRec(root, key);
+    }
+
+    private Node insertRec(Node root, int key) {
+        if (root == null) {
+            return new Node(key);
+        }
+        if (key < root.key) {
+            root.left = insertRec(root.left, key);
+        } else if (key > root.key) {
+            root.right = insertRec(root.right, key);
+        }
+        return root;
+    }
+
+    // Inorder Traversal (Left, Root, Right)
+    public void inorderTraversal() {
+        inorderHelper(root);
+        System.out.println();
+    }
+    private void inorderHelper(Node node) {
+        if (node != null) {
+            inorderHelper(node.left);
+            System.out.print(node.key + " ");
+            inorderHelper(node.right);
+        }
+    }
+
+    // Preorder Traversal (Root, Left, Right)
+    public void preorderTraversal() {
+        preorderHelper(root);
+        System.out.println();
+    }
+    private void preorderHelper(Node node) {
+        if (node != null) {
+            System.out.print(node.key + " ");
+            preorderHelper(node.left);
+            preorderHelper(node.right);
+        }
+    }
+
+    // Postorder Traversal (Left, Right, Root)
+    public void postorderTraversal() {
+        postorderHelper(root);
+        System.out.println();
+    }
+    private void postorderHelper(Node node) {
+        if (node != null) {
+            postorderHelper(node.left);
+            postorderHelper(node.right);
+            System.out.print(node.key + " ");
+        }
+    }
+
+    // Level Order Traversal (Breadth-First)
+    public void levelOrder() {
+        if (root == null) {
+            System.out.println("0");
+            return;
+        }
+
+        Queue<Node> queue = new LinkedList<>();
+        queue.add(root);
+
+        while (!queue.isEmpty()) {
+            int levelSize = queue.size();
+            boolean hasNextLevel = false;
+
+            for (int i = 0; i < levelSize; i++) {
+                Node tempNode = queue.poll();
+
+                if (tempNode != null) {
+                    System.out.print(tempNode.key + " ");
+                    queue.add(tempNode.left);
+                    queue.add(tempNode.right);
+
+                    if (tempNode.left != null || tempNode.right != null) {
+                        hasNextLevel = true;
+                    }
+                } else {
+                    System.out.print("0 ");  // Represent null as 0
+                }
+            }
+            if (!hasNextLevel) break;
+        }
+        System.out.println();
+    }
+
+    // Custom Delete Method
+    public void delete(int key) {
+        root = customDelete(root, key);
+    }
+
+    private Node customDelete(Node root, int key) {
+        if (root == null) {
+            return root;
+        }
+
+        if (key < root.key) {
+            root.left = customDelete(root.left, key);
+        } else if (key > root.key) {
+            root.right = customDelete(root.right, key);
+        } else {
+            if (root.left != null) {
+                int replacement = findRightmost(root.left);
+                root.key = replacement;
+                root.left = customDelete(root.left, replacement);
+            } else if (root.right != null) {
+                int replacement = findLeftmost(root.right);
+                root.key = replacement;
+                root.right = customDelete(root.right, replacement);
+            } else {
+                return null;
+            }
+        }
+        return root;
+    }
+
+    private int findRightmost(Node node) {
+        while (node.right != null) {
+            node = node.right;
+        }
+        return node.key;
+    }
+
+    private int findLeftmost(Node node) {
+        while (node.left != null) {
+            node = node.left;
+        }
+        return node.key;
+    }
+}
+
+// Main class
+public class BinaryTraversal {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        BinaryTree tree = new BinaryTree();
+        StringToArray convert = new StringToArray();
+
+        while (true) {
+            try {
+                System.out.print("\nOptions\n1. Insert\n2. Delete\n3. Display Traversals\n4. Exit\nChoice: ");
+                int inp = sc.nextInt();
+                sc.nextLine(); // Consume newline
+
+                if (inp == 1) {
+                    System.out.print("\nInsert: ");
+                    String numbers = sc.nextLine();
+                    int[] arr = convert.stringToArr(numbers);
+                    for (int num : arr) {
+                        tree.insert(num);
+                    }
+                    System.out.print("\n1D output of BT: ");
+                    tree.levelOrder();
+
+                } else if (inp == 2) {
+                    System.out.print("\nDelete: ");
+                    String delete = sc.nextLine();
+                    int[] arr1 = convert.stringToArr(delete);
+                    for (int num : arr1) {
+                        tree.delete(num);
+                    }
+                    System.out.print("1D output of BT: ");
+                    tree.levelOrder();
+
+                } else if (inp == 3) {
+                    System.out.println("\nDisplaying Traversals:");
+                    System.out.print("Inorder: ");
+                    tree.inorderTraversal();
+                    System.out.print("Preorder: ");
+                    tree.preorderTraversal();
+                    System.out.print("Postorder: ");
+                    tree.postorderTraversal();
+
+                } else if (inp == 4) {
+                    System.out.println("Exiting program...");
+                    break;
+
+                } else {
+                    System.out.println("Invalid Input");
+                }
+
+            } catch (InputMismatchException e) {
+                System.out.println("Invalid input! Please enter a number.");
+                sc.nextLine(); // Consume invalid input to prevent an infinite loop
+            }
+        }
+        sc.close();
+    }
+}
